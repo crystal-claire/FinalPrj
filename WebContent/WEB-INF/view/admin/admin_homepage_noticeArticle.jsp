@@ -26,6 +26,15 @@
     background-color: #f5f4f2;
     color: #fca652 !important;
 }
+ 
+button.adminBtn.listBtn { 
+    width: 120px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #969799;
+} 
+ 
+
 /* sweetalert */
 
 h2#swal2-title {
@@ -82,7 +91,9 @@ button.swal2-cancel.swal2-styled:focus {
         			    	icon: 'success',
         			    	confirmButtonText: '확인'
         			    }).then(() => {
-        			    	location.href='ad_notice_list.lion';
+        			    	
+        			    	var code = $("#code").val();
+        			    	location.href='ad_notice_delete.lion?code='+code;
         			    });
   		    	  }
     			})
@@ -158,7 +169,7 @@ button.swal2-cancel.swal2-styled:focus {
 						<div class="collapse show" id="homepage" aria-labelledby="headingThree"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link current-menu" href="admin_homepage_noticeList.jsp">공지사항</a> 
+								<a class="nav-link current-menu" href="ad_notice_list.lion">공지사항</a> 
 								<a class="nav-link" href="admin_homepage_categoryList.jsp">카테고리</a> 
 								<a class="nav-link" href="admin_homepage_mannerLevelList.jsp">매너지수</a>
 							</nav>
@@ -211,8 +222,8 @@ button.swal2-cancel.swal2-styled:focus {
 						<div class="collapse" id="inquiry" aria-labelledby="headingSix"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="admin_inquiry_inquiryList.jsp">1:1문의</a> 
-								<a class="nav-link current-menu" href="admin_inquiry_faqList.jsp">FAQ</a>
+								<a class="nav-link" href="ad_inquery_list.lion">1:1문의</a> 
+								<a class="nav-link current-menu" href="ad_faq_list.lion">FAQ</a>
 							</nav>
 						</div>
 						<div class="sb-sidenav-menu-heading">ADMIN ACCOUNT</div>
@@ -272,15 +283,32 @@ button.swal2-cancel.swal2-styled:focus {
 	<c:out value="${content}"/> 
 </c:forTokens>   
 									</p>
+									
+								 
+								 <!-- 사진이 있다면 표시, 없다면 미표시 -->
+								<c:choose>
+									<c:when test="${noticeArticle.photo_path eq null }">
+									</c:when>
+									
+									<c:otherwise>
+										<img src="<%=cp%>/img/ad_notice/${noticeArticle.photo_path }" alt="dsdd"/> 
+									</c:otherwise>
+								</c:choose>
+								
 								
 							</div>
 							<div class="btn-container notice-btn">
 								<button type="button" class="adminBtn cancelBtn answerCancelBtn">삭제</button>
 								<button type="button" class="adminBtn saveBtn answerInsertBtn"
-								onclick="location.href='ad_notice_updateForm.lion?code=${noticeArticle.code}'">수정</button>
+								onclick="location.href='ad_notice_updateForm.lion?code=${noticeArticle.code}'">수정</button> 
+								
+								 
 							</div>
+							
+							<input type="hidden" id="code" value="${noticeArticle.code}">
+							
 							<div>
-								<div class="noticeArticle-helper"></div>
+								<div class="noticeArticle-helper"></div> 
 								<button type="button" class="adminBtn listBtn"
 								onclick="location.href='ad_notice_list.lion'">목록</button>
 							</div>

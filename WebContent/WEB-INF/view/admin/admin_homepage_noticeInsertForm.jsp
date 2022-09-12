@@ -3,6 +3,8 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String member_code = (String)session.getAttribute("member_code");
 %>
 <!DOCTYPE html>
 <html>
@@ -85,8 +87,22 @@ button.swal2-cancel.swal2-styled:focus {
       			    	confirmButtonText: '확인'
       			    }).then(() => {
       			    	/* 해당게시물 상세보기로 이동 */ 
-      			    	$("form").submit();	 
-      			    	location.href='ad_notice_insertForm_ok.lion';
+ 
+      			    	//title, content, admin_code, photo_path);
+      					var title = $("#title").val();
+      					var content = $("#content").val();
+      					var admin_code = $("#admin_code").val();
+      					//var photo = $("#photo_path").val();
+      					//var photo_path = document.getElementById("photo_path").files[0].name;
+      					var photo_path = document.getElementById("photo_path").value;
+      					
+      					/* 
+      					if(photo !== null)
+      						var photo_path = document.getElementById("photo_path").files[0].name;
+      					else
+      						var photo_path = document.getElementById("photo_path").value; 
+      				 */
+      			    	location.href='ad_notice_insert.lion?title=' + title + '&content=' + content + '&admin_code=' + admin_code + '&photo_path=' + photo_path;
       			    });
       			  }
     			})
@@ -260,17 +276,21 @@ button.swal2-cancel.swal2-styled:focus {
 							</ol>
 						</nav>
 
-						<div class="card-body">
+						<div class="card-body"> 
 							<div class="inquiry-container">
 								<div class="admin-textarea-box">
-									<form  id="noticeInsertForm" name="noticeInsertForm" method="post">
+									<form  id="noticeInsertForm" name="noticeInsertForm" method="get" enctype="multipart/form-data">
 										<label for="title" class="col-form-label">제목</label>
 										<input type="text" class="form-control-plaintext faq-title" id="title">
 										<label for="content" class="col-form-label">내용</label>
 										<textarea class="form-control admin-textarea" id="content" rows="15"></textarea>
-										<input type="file" class="admin-textarea-file" multiple="multiple"  name="uploadFile1" id="path"/>
+										 
+										<!-- <input type="file" class="admin-textarea-file" name="photo_path" id="photo_path"/> -->
 										
-										<!-- <input type="text" id="name"> -->
+										
+										
+										<input type="hidden" id="admin_code" value=<%=member_code %>>
+										 
 										
 										<button type="button" class="adminBtn cancelBtn answerCancelBtn">취소</button>
 										<button type="button" class="adminBtn saveBtn answerInsertBtn">등록</button>

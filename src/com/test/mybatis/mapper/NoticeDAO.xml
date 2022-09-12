@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.INoticeDAO">
+ 
+
+
+    <!-- 공지사항 목록조회 -->
+	<select id="listUserNotice"
+	resultType="com.test.mybatis.NoticeDTO">
+	SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS NUM
+     ,TITLE, ID , N.WRITE_DATETIME AS WRITE_DAY, N.CODE AS CODE
+	FROM NOTICE N LEFT JOIN ADMIN_INFO AI
+ 	 ON N.ADMIN_CODE = AI.MEMBER_CODE	
+	</select>
+	
+	
+    <!-- 공지사항 게시물조회 --> 
+	<select id="listUserNoticeArticle"
+	parameterType="com.test.mybatis.NoticeDTO"
+	resultType="com.test.mybatis.NoticeDTO">
+	SELECT TITLE, WRITE_DAY, CONTENT 
+	FROM
+	(
+	    SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS NUM
+	         , N.TITLE, AI.ID, N.WRITE_DATETIME AS "WRITE_DAY", N.CONTENT, NP.PATH, N.CODE
+	    FROM NOTICE N LEFT JOIN ADMIN_INFO AI
+	      ON N.ADMIN_CODE = AI.MEMBER_CODE
+	        LEFT JOIN NOTICE_PHOTO NP
+	          ON N.CODE = NP.NOTICE_CODE
+	) NAI
+	WHERE CODE=#{code}
+	</select>
+
+
+
+</mapper>

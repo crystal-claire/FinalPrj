@@ -3,7 +3,7 @@ package com.test.mybatis;
 public class AdminDTO
 {
 	private String code, id, pw, name, tel
-				 , profile_path, admin_grade_code, member_code;
+				 , profile_path, admin_grade_code, member_code, photo_path;
 
 	
 	public String getCode()
@@ -84,6 +84,16 @@ public class AdminDTO
 	public void setMember_code(String member_code)
 	{
 		this.member_code = member_code;
+	}
+
+	public String getPhoto_path()
+	{
+		return photo_path;
+	}
+
+	public void setPhoto_path(String photo_path)
+	{
+		this.photo_path = photo_path;
 	}
 				  
 }

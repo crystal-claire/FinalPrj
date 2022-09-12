@@ -71,10 +71,12 @@ public class LoginController
    {
       String result = null;
       
-      IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+      IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class); 
       HttpSession session = request.getSession();
       String member_code = null;
+      String id = null;
       member_code = dao.loginAdmin(admin);
+      id = admin.getId();
       
       if (member_code == null)									// 관리자 정보가 없을 경우
       {
@@ -83,7 +85,9 @@ public class LoginController
       else														// 정상 로그인
       {
     	 session.setAttribute("member_code", member_code);
-         result = "redirect:/admin/admin_main.jsp";
+    	
+    	 session.setAttribute("id", id);
+         result = "redirect:ad_main.lion";
       }
       return result;
    }

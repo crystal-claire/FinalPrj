@@ -139,7 +139,7 @@
 	<!-- 공지사항 목록조회 -->
 	<select id="listNotice"
 		resultType="com.test.mybatis.AdNoticeListDTO">
-		SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS
+ 		SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS
 		NUM
 		, N.TITLE, AI.ID AS ADMIN_CODE, N.WRITE_DATETIME, N.CODE
 		FROM NOTICE
@@ -151,38 +151,65 @@
 	<select id="listNoticeArticle"
 		parameterType="com.test.mybatis.AdNoticeListDTO"
 		resultType="com.test.mybatis.AdNoticeListDTO">
-		SELECT TITLE, ADMIN_CODE, WRITE_DATETIME, CONTENT, PATH,
+		SELECT TITLE, ADMIN_CODE, WRITE_DATETIME, CONTENT, PHOTO_PATH,
 		CODE
 		FROM
 		(
 		SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS
 		NUM
 		, N.TITLE, AI.ID AS ADMIN_CODE, N.WRITE_DATETIME, N.CONTENT,
-		NP.PATH
+		N.PHOTO_PATH
 		,N.CODE
 		FROM NOTICE N LEFT JOIN ADMIN_INFO AI
 		ON N.ADMIN_CODE =
 		AI.MEMBER_CODE
-		LEFT JOIN NOTICE_PHOTO NP
-		ON N.CODE = NP.NOTICE_CODE
 		) NAI
-		WHERE CODE=#{code}
+		WHERE CODE=#{code, jdbcType=VARCHAR}
 	</select>
 	
-	<!-- 공지사항 게시물수정폼 -->
-    <select id="modifyNoticeArticleForm" parameterType="com.test.mybatis.AdNoticeListDTO"  resultType="com.test.mybatis.AdNoticeListDTO">
-        SELECT TITLE, ADMIN_CODE, WRITE_DATETIME, CONTENT, PATH, CODE
+	<!-- 공지사항 게시물 UPDATE FORM -->
+    <select id="updateNoticeArticleForm" parameterType="com.test.mybatis.AdNoticeListDTO"  resultType="com.test.mybatis.AdNoticeListDTO">
+        SELECT TITLE, ADMIN_CODE, WRITE_DATETIME, CONTENT, PHOTO_PATH, CODE
         FROM
         (
             SELECT ROW_NUMBER() OVER(ORDER BY N.WRITE_DATETIME DESC) AS NUM
-                 , N.TITLE, AI.ID AS ADMIN_CODE, N.WRITE_DATETIME, N.CONTENT, NP.PATH ,N.CODE
+                 , N.TITLE, AI.ID AS ADMIN_CODE, N.WRITE_DATETIME, N.CONTENT, N.PHOTO_PATH ,N.CODE
             FROM NOTICE N LEFT JOIN ADMIN_INFO AI
               ON N.ADMIN_CODE = AI.MEMBER_CODE
-                LEFT JOIN NOTICE_PHOTO NP
-                  ON N.CODE = NP.NOTICE_CODE
         ) NAI
-        WHERE CODE=#{code}
+        WHERE CODE=#{code, jdbcType=VARCHAR}
     </select>
+   
+   
+   <!-- 공지사항 게시물 INSERT -->
+   <insert id="insertNoticeArticle"   parameterType="com.test.mybatis.AdNoticeListDTO">
+	   INSERT INTO NOTICE(CODE, TITLE, CONTENT, WRITE_DATETIME, UPDATE_DATETIME, ADMIN_CODE, PHOTO_PATH)
+	   VALUES('N'||NOTICE_SEQ.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, SYSDATE, NULL, #{admin_code, jdbcType=VARCHAR}, #{photo_path, jdbcType=VARCHAR})
+   </insert> 
+   
+   
+   <!-- 공지사항 게시물 UPDATE -->
+   <update id="updateNoticeArticle" parameterType="com.test.mybatis.AdNoticeListDTO">
+	   UPDATE NOTICE
+		SET TITLE= #{title, jdbcType=VARCHAR}
+		    , CONTENT= #{content, jdbcType=VARCHAR}
+		    , PHOTO_PATH= #{photo_path, jdbcType=VARCHAR}
+    		, UPDATE_DATETIME = SYSDATE
+		WHERE CODE= #{code, jdbcType=VARCHAR}
+   </update>  
+   
+   
+   <!-- 공지사항 게시물 DELETE  -->
+   <delete id="deleteNoticeArticle" parameterType="com.test.mybatis.AdNoticeListDTO">
+		DELETE
+		FROM NOTICE
+		WHERE CODE= #{code, jdbcType=VARCHAR}
+   </delete>  
+   
+   
+   
+   
+    
 
 	<!-- 메인 카테고리 목록 -->
 	<select id="listCategory"
@@ -219,5 +246,127 @@
 		WHERE CODE = #{code}
 	</select>
 
+
+    <!-- 1:1 문의 목록조회 --> 
+	<select id="listInquiry"
+	resultType="com.test.mybatis.AdIqListDTO">
+	SELECT ROWNUM AS NUM, INQUIRY_CODE, INQUIRY_ANSWER_CODE, TITLE, WRITER_ID, WRITE_DATETIME, STATE, ANSWER_DATETIME, ANSWERER
+	FROM VIEW_INQUIRY_ADMIN_SELECT
+	</select>
+
+
+    <!-- 1:1 문의 게시물조회 --> 
+ 	<select id="listInquiryArticle"
+	resultType="com.test.mybatis.AdIqListDTO">
+    SELECT INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+	</select>
+    
+    
+    <!-- 1:1 문의 update Form  -->
+    <select id="updateInquiryArticleForm"
+    resultType="com.test.mybatis.AdIqListDTO">
+    SELECT INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+    </select>
+    
+    <!-- 1:1 문의 insert Form  -->
+    <select id="insertInquiryArticleForm"
+    resultType="com.test.mybatis.AdIqListDTO">
+    SELECT INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	<!-- 1:1 문의 INSERT -->
+	<insert id="insertInquiryArticle" parameterType="com.test.mybatis.AdIqListDTO">
+	    INSERT INTO INQUIRY_ANSWER(CODE, CONTENT, WRITE_DATETIME, CHECK_DATETIME, UPDATE_DATETIME, INQUIRY_CODE, ADMIN_CODE )
+		VALUES('IA'||INQUIRY_ANSWER_SEQ.NEXTVAL, #{content, jdbcType=VARCHAR}, SYSDATE, NULL, NULL, #{inquiry_code, jdbcType=VARCHAR}, #{admin_code, jdbcType=VARCHAR})
+    </insert>  
+    
+    
+    <!-- 1:1 문의 UPDATE -->
+ 	<update id="updateInquiryArticle" parameterType="com.test.mybatis.AdIqListDTO">
+		UPDATE INQUIRY_ANSWER
+		SET CONTENT=#{content, jdbcType=VARCHAR}
+		    , UPDATE_DATETIME = SYSDATE
+		WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+    </update> 
+    
+    
+    <!-- 1:1 문의 DELETE -->
+ 	<delete id="deleteInquiryArticle" parameterType="com.test.mybatis.AdIqListDTO">
+		DELETE 
+		FROM INQUIRY_ANSWER
+		WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}    
+    </delete> 
+    
+    
+    
+    
+    
+    
+    <!-- faq 목록 조회 --> 
+    <select id="listfaq"
+	resultType="com.test.mybatis.AdfaqListDTO">
+	SELECT ROWNUM AS NUM, F.CODE AS CODE, TITLE, CONTENT, ID, WRITE_DATETIME
+	FROM FAQ F LEFT OUTER JOIN ADMIN_INFO AI
+    ON F.ADMIN_CODE = AI.MEMBER_CODE
+	</select>
+	
+	
+    <!-- faq 게시물조회 --> 
+    <select id="listfaqArticleForm"
+	resultType="com.test.mybatis.AdfaqListDTO">
+ 	SELECT F.CODE AS CODE, TITLE, CONTENT, ID 
+	FROM FAQ F LEFT OUTER JOIN ADMIN_INFO AI
+	ON F.ADMIN_CODE = AI.MEMBER_CODE
+	WHERE F.CODE=#{code}
+	</select>
+
+
+	<!-- faq UPDATE FORM -->
+	<select id="updateFaqArticleForm"
+	resultType="com.test.mybatis.AdfaqListDTO">
+ 	SELECT F.CODE AS CODE, TITLE, CONTENT, ID 
+	FROM FAQ F LEFT OUTER JOIN ADMIN_INFO AI
+	ON F.ADMIN_CODE = AI.MEMBER_CODE
+	WHERE F.CODE=#{code}
+	</select>
+	
+	
+	
+	<!-- FAQ INSERT -->
+ 	<insert id="insertFaqArticle" parameterType="com.test.mybatis.AdfaqListDTO">
+		INSERT INTO FAQ(CODE, TITLE, CONTENT, WRITE_DATETIME, UPDATE_DATETIME, ADMIN_CODE)
+		VALUES('F'||FAQ_SEQ.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, SYSDATE, NULL, #{admin_code, jdbcType=VARCHAR})
+ 	</insert>
+ 
+ 
+ 
+	<!-- FAQ UPDATE -->
+	<update id="updateFaqArticle" parameterType="com.test.mybatis.AdfaqListDTO">
+		UPDATE FAQ
+		SET TITLE = #{title, jdbcType=VARCHAR}
+		    , CONTENT = #{content, jdbcType=VARCHAR}
+		    , UPDATE_DATETIME = SYSDATE
+		WHERE CODE=#{code, jdbcType=VARCHAR}
+	</update>
+
+	
+	
+	<!-- FAQ DELETE -->
+	<delete id="deleteFaqArticle" parameterType="com.test.mybatis.AdfaqListDTO">
+		DELETE
+		FROM FAQ
+		WHERE CODE= #{code, jdbcType=VARCHAR}	
+	</delete>
+	
+	
+	
 
 </mapper>

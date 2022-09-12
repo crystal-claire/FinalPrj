@@ -4,10 +4,12 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String member_code = (String)session.getAttribute("member_code");
+	String id = (String)session.getAttribute("id");
+
 %>
-<%
-	AdminDTO dto = (AdminDTO)request.getAttribute("result");	
-%>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,8 +37,8 @@
 			<div class="header-inner">
 				<!-- 일단 이거 있으면 .lion 통해서 온 거 아니면 header를 못 불러와서 주석처리해놓음 -->
 				<!-- 발표할 때는 걍 이렇게! -->
-				<%-- <div class="profile_nickname"><%=dto.getId() %> 님</div> --%>
-				<div class="profile_nickname">admin_yong 님</div>
+				   <div class="profile_nickname"><%=id %> 님 </div>  
+				<!--  <div class="profile_nickname">admin_yong 님</div>   -->
 				<button id="logoutBtn" type="button" class="btn btn-secondary"
 				onclick="location.href='<%=cp %>/main.lion'">로그아웃</button>
 			</div>
@@ -48,7 +50,7 @@
 					<div id="lion_logo">같이사자</div>
 				</a>
 			</div>
-			<a href="user_main.jsp"><div class="go">GO</div></a>
+			<a href="main.lion"><div class="go">GO</div></a>
 		</div>
 	</nav>
 

@@ -8,9 +8,9 @@ package com.test.mybatis;
 public class AdNoticeListDTO
 {
 	// 주요 속성 구성
-	private String num, code, title, content, write_datetime, update_datetime, admin_code, path, path2, name, photo_code;
+	private String num, code, title, content, write_datetime, update_datetime, admin_code, path, path2, name, photo_code, photo_path;
 	 
-	
+	 
 	// getter / setter 구성
 
 	public String getNum()
@@ -122,6 +122,16 @@ public class AdNoticeListDTO
 	public void setPhoto_code(String photo_code)
 	{
 		this.photo_code = photo_code;
+	}
+
+	public String getPhoto_path()
+	{
+		return photo_path;
+	}
+
+	public void setPhoto_path(String photo_path)
+	{
+		this.photo_path = photo_path;
 	}
 
  

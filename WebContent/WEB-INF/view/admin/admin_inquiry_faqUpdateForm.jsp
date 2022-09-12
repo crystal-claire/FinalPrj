@@ -1,14 +1,8 @@
-<%@page import="com.test.util.DBConn"%>
-<%@page import="java.sql.Connection"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-%>
-<%
-		
-
 %>
 <!DOCTYPE html>
 <html>
@@ -18,23 +12,161 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>admin같이사자</title>
 
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <link href="<%=cp %>/css/adminStyle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="<%=cp %>/js/scripts.js"></script>
-	
+
 <style type="text/css">
 .sb-sidenav-menu a.current-menu {
     background-color: #f5f4f2;
     color: #fca652 !important;
 }
+
+/* sweetalert */
+h2#swal2-title {
+    font-size: 23px;
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+input.swal2-input {
+    margin-bottom: 10px;
+}
+input.swal2-input:focus {
+    box-shadow: none;
+    border: 2px solid #fca652;
+}
+button.swal2-confirm.swal2-styled {
+    background-color: #fca652;
+    width: 100px;
+    margin-right: 20px;
+}
+button.swal2-cancel.swal2-styled {
+    width: 100px;
+    margin-right: 20px;
+}
+button.swal2-confirm.swal2-styled:focus {
+    box-shadow: none;
+}
+button.swal2-cancel.swal2-styled:focus {
+    box-shadow: none;
+}
 </style>	
+<script>
+	
+	$(document).ready(function()
+    {
+    	$(".saveBtn").click(function()
+    	{
+    		Swal.fire({
+    			  title: 'FAQ를 수정하시겠습니까?',
+    			  showCancelButton: true,
+    			  confirmButtonText: '수정',
+    			  cancelButtonText: '취소',
+    		      reverseButtons: true
+    			}).then((result) => {
+    			  if (result.isConfirmed) {
+    				  
+   					// Update 작업 처리 코드 작성하기!
+   					
+   				 
+   					
+   					// Update 완료 후, 띄울 알림창
+      			    Swal.fire({
+      			    	title: '수정 완료!',
+      			    	icon: 'success',
+      			    	confirmButtonText: '확인'
+      			    }).then(() => {
+      			    	/* 수정한 faq 상세페이지로 이동 */
+      			    	//location.href = 'ad_faq_article.lion';
+      			    	
+      			    	/*
+      			    	var form = $(this).parents('faqUpdateForm');
+       					form.submit(); 
+       					//$('#faqUpdateForm').submit();
+       					location.href = 'ad_faq_update.lion';
+      			    	*/
+      			    	
+      			    	
+      			    	
+      			    	
+      			    	 /*
+      			   		// 여기서의 this는 수정버튼  .parent 이거하는걸 트레버싱이라고함
+      					var title = $("#title").val();
+      					var content = $("#content").text(); 		// 부모 tr의 1번째 td의 글자
+      					var code = $("#code").val();
+      					
+      					// 위에 담은 변수를 대입
+      					$("#title").val(title);
+      					$("#content").val(content);
+      					$("#code").val(code);
+      					
+      					//$("#faqUpdateForm").attr("action", "ad_faq_update.lion"); // 지금은 action 속성이 memberinsert.action인데 이것을 바꾸겠다.
+      			    	var form = $(this).parents('faqUpdateForm');
+       					form.submit(); 
+      					location.href = 'ad_faq_update.lion?title=title&content=content&code=code';
+      					*/
+      					 
+      					
+      					
+      					
+      					
+      			    	/* $( "#faqUpdateForm" ).submit(function( event ) {
+      			    	  event.preventDefault();
+      			    	  var url = $(this).attr( "action" );
+      			    	  var data = $(this).serialize(); 
+      			    	  
+      			    	  $.post( url, data )
+      			    	  .done(function( data ) {
+      			    	    console.log('--->', data.title, data.content, data.code);
+      			    	  });
+      			    	});
+      					 */
+      					 
+      					 
+      					 var title = document.getElementById("title");
+      					 var content = document.getElementById("content"); 
+      					 var code = document.getElementById("code");
+      						
+      					 location.href = 'ad_faq_update.lion?title=' + title.value + '&content=' + content.value + '&code=' + code.value;
+      					 
+      					 
+      					 
+      					
+      			    });
+      			  }
+    			})
+        });
+    	
+    	$(".cancelBtn").click(function()
+		{
+    		Swal.fire({
+    			  title: '그만하고 목록으로 돌아가시겠습니까?',
+    			  text: "변경사항이 저장되지 않습니다.",
+    			  icon: 'warning',
+    			  iconColor: '#f27474',
+    			  showCancelButton: true,
+    			  confirmButtonText: '목록으로',
+    			  cancelButtonText: '취소'
+    			}).then((result) => {
+    			  if (result.isConfirmed) {
+    				  location.href='ad_faq_list.lion';
+    			  }
+    			})
+		});
+
+    });
+	
+</script>
 </head>
 <body class="sb-nav-fixed">
 
 	<!-- import HEADER -->
-	<c:import url="header.lion"></c:import>
+	<c:import url="admin_header.jsp"></c:import>
 
 	<div id="layoutSidenav">
 
@@ -129,10 +261,10 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse show" id="report" aria-labelledby="headingFive"
+						<div class="collapse" id="report" aria-labelledby="headingFive"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link current-menu" href="admin_report_receptionList.jsp">접수내역</a> 
+								<a class="nav-link" href="admin_report_receptionList.jsp">접수내역</a> 
 								<a class="nav-link" href="admin_report_handlingList.jsp">처리내역</a> 
 								<a class="nav-link" href="admin_report_reasonList.jsp">사유관리</a>
 							</nav>
@@ -147,11 +279,11 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="inquiry" aria-labelledby="headingSix"
+						<div class="collapse show" id="inquiry" aria-labelledby="headingSix"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
 								<a class="nav-link" href="admin_inquiry_inquiryList.jsp">1:1문의</a> 
-								<a class="nav-link" href="admin_inquiry_faqList.jsp">FAQ</a>
+								<a class="nav-link current-menu" href="admin_inquiry_faqList.jsp">FAQ</a>
 							</nav>
 						</div>
 						<div class="sb-sidenav-menu-heading">ADMIN ACCOUNT</div>
@@ -168,81 +300,38 @@
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
-					<div class="card mb-4 admin-table-body">
+					<div class="card mb-4">
 
 						<!--  Breadcrumb -->
 						<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item">신고관리</li>
+								<li class="breadcrumb-item">문의관리</li>
 								<li class="breadcrumb-item active" aria-current="page"><a
-									href="#">접수내역</a></li>
+									href="#">FAQ</a></li>
 							</ol>
 						</nav>
-
-						<!-- searchBar -->
-						<form action="#">
-							<select class="form-select" aria-label="Default select example">
-								<option value="1" selected>이메일(ID)</option>
-							</select> <input class="form-control" type="text"
-								aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-							<button class="btn btn-primary" id="btnNavbarSearch"
-								type="button">
-								<i class="fas fa-search"></i>
-							</button>
-						</form>
-
+						
+						<c:forEach var="faqUpdate" items="${article }">
 						<div class="card-body">
-							<table class="table table-bordered table-hover">
-								<thead>
-									<tr>
-										<th>번호</th>
-										<th>피신고자ID</th>
-										<th>게시물종류</th>
-										<th>게시물번호</th>
-										<th>신고자ID</th>
-										<th>신고사유</th>
-										<th>신고접수일</th>									
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="report" items="${list }">
-									<tr>
-										<td>${report.num }</td>
-										<td>${report.member_id}</td>
-										<td>${report.type }</td>
-										<td><a href="<%=cp%>/admin_report_receptionDetail.lion?code=${report.code}">${report.buypost_code }</a></td>
-										<td>${report.reporter_id}</td>
-										<td>${report.main_name}</td>
-										<td>${report.datetime }</td>
-									</tr>
-									</c:forEach> 
-								</tbody>
-							</table>
-						</div>
+							<div class="admin-textarea-box">
+								<form method="get" id="faqUpdateForm" action="ad_faq_update.lion">
+									<label for="title" class="col-form-label">제목</label> 
+									<input type="text" class="form-control-plaintext faq-title" id="title"
+									value="${faqUpdate.title }"> 
+									<label for="content" class="col-form-label">내용</label>
+									<textarea class="form-control admin-textarea" id="content" rows="15" 
+										value=${faqUpdate.content }>${faqUpdate.content }</textarea>
+									 <input type="hidden" id="code" value="${faqUpdate.code }">
 
-						<!-- page navigation -->
-						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-center">
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);" aria-label="Previous"> <span
-										aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);">1</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);">2</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);">3</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);">4</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);">5</a></li>
-								<li class="page-item"><a class="page-link"
-									href="javascript:void(0);" aria-label="Next"> <span
-										aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
-						</nav>
+									<button type="button" class="adminBtn cancelBtn answerCancelBtn">취소</button>
+									<button type="button" class="adminBtn saveBtn answerInsertBtn">수정</button>
+									 
+								</form>
+							</div>
+						</div>
+						</c:forEach>
+						
+						
 					</div>
 				</div>
 			</main>

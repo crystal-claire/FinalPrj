@@ -75,7 +75,7 @@ button.swal2-cancel.swal2-styled:focus {
     			  if (result.isConfirmed) {
     				  
         			// Update 작업 처리 코드 작성하기!
- 					alert("확인");
+ 					//alert("확인");
         			
         			
         			  /*
@@ -133,7 +133,7 @@ button.swal2-cancel.swal2-styled:focus {
       			       alert("전송 성공");
       			       */
       			       
-      			       
+      			        /*
 					   var form1 = $("#adNoticeUpdateForm");
       			       
       			       $.ajax({
@@ -151,7 +151,15 @@ button.swal2-cancel.swal2-styled:focus {
       			    	   
       			    	   
       			       });
-        			 
+        			 	 */
+        			 	
+        			 	//location.href='ad_notice_list.lion';
+        			 	/* var form = document.getElementById("adNoticeUpdateForm");
+        			 	form.action= "ad_notice_list.lion"; 
+        			 	form.method = "GET";
+        			 	form.submit(); */ 
+        			 	 
+        			 	 
         			
       		    	// Update 완료 후, 띄울 알림창
       			    Swal.fire({
@@ -160,7 +168,52 @@ button.swal2-cancel.swal2-styled:focus {
       			    	confirmButtonText: '확인'
       			    }).then(() => {
       			    	
-      			    	location.href = 'ad_notice_article.lion';
+      			    	///location.href = 'ad_notice_article.lion';
+      			    	
+      			    	// 수정 완료 팝업이 뜨는 부분에서 submit 처리를 해주지 않으면 
+      			    	// 수정 완료 알림이 제대로 뜨기 전에 페이지가 넘어가버리기 때문에
+      			    	// 여기에 처리하게 되었다.
+      			    	//var form = document.getElementById("adNoticeUpdateForm");
+        			 	//form.action= "ad_notice_update.lion"; 
+        			 	//form.method = "POST";
+        			 	//form.submit();
+        			 	
+        			 	
+        			 	/*
+        			 	var title = $(this).parents("inquiry-container").find("td:eq(0)").text();
+						var content = $(this).parents("inquiry-container").find("td:eq(1)").text(); 		// 부모 tr의 1번째 td의 글자
+						var photo_path = $(this).parents("inquiry-container").find("td:eq(2)").text();
+						var code = $(this).parents("inquiry-container").find("td:eq(2)").text();
+						
+						// 위에 담은 변수를 대입
+						$("#title").val(title);
+						$("#content").val(content);
+						$("#photo_path").val(photo_path);
+						$("#code").val(code);
+						
+						$("form").attr("action", "ad_notice_update.lion"); // 지금은 action 속성이 memberinsert.action인데 이것을 바꾸겠다.
+			        	*/	 	
+        			 	
+			        	
+			        	
+			        	/*
+			        	document.adNoticeUpdateForm.method="POST";
+						document.adNoticeUpdateForm.action="location.href='ad_notice_update.lion'";
+						document.adNoticeUpdateForm.submit();
+						*/
+						
+						
+						//title, content, photo_path, code
+						var title = $("#title").val();
+						var content = $("#content").val();
+						//var photo_path = $("#photo_path").val();
+						//var photo_path = document.getElementById("photo_path").files[0].name;
+						var photo_path = document.getElementById("photo_path").value;
+						var code = $("#code").val();
+							
+						location.href = 'ad_notice_update.lion?title=' + title + '&content=' + content + '&photo_path=' + photo_path + '&code=' + code;
+						
+						
       			    });
       			  }
     			})
@@ -345,7 +398,7 @@ button.swal2-cancel.swal2-styled:focus {
 							<div class="inquiry-container">
 								
 								<div class="admin-textarea-box">
-									<form method="post" id="adNoticeUpdateForm">
+									<form method="post" id="adNoticeUpdateForm" action="ad_notice_update.lion"   >
 										<c:forEach var="noticeArticle" items="${article }">
 										<label for="title" class="col-form-label">제목</label>
 										<input type="text" class="form-control-plaintext faq-title" id="title"
@@ -357,7 +410,9 @@ button.swal2-cancel.swal2-styled:focus {
 	<c:out value="${content}"/>
 </c:forTokens>					
 										</textarea>
-										<input type="file" class="admin-textarea-file" id="file1"/>
+										<!-- <input type="file" class="admin-textarea-file" id="photo_path"/> -->
+										<input type="hidden" id="code" value="${noticeArticle.code }">
+										
 										</c:forEach>
 										<button type="button" class="adminBtn cancelBtn answerCancelBtn">취소</button>
 										<button type="button" id="adNtcUpdtBtn" class="adminBtn saveBtn answerInsertBtn">수정</button>

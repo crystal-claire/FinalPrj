@@ -32,5 +32,19 @@ public class HeaderController
 		
 		return "/WEB-INF/view/user/user_header.jsp";
 	}
+	
+	
+	// 헤더 페이지 admin
+	@RequestMapping(value="/ad_header.lion")
+	public String ad_header(Model model)
+	{
+		IMainCateDAO dao = sqlSession.getMapper(IMainCateDAO.class);
+		ArrayList<MainCateDTO> list = dao.list();
+		
+		model.addAttribute("list", list);
+		
+		return  "/WEB-INF/view/admin/admin_header.jsp";
+	 
+	}
 		
 }

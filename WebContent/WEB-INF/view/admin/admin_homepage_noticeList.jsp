@@ -1,9 +1,10 @@
+<%@page import="com.test.mybatis.AdminDTO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-%>
+%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,7 +96,7 @@
 						<div class="collapse show" id="homepage" aria-labelledby="headingThree"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link current-menu" href="admin_homepage_noticeList.jsp">공지사항</a> 
+								<a class="nav-link current-menu" href="ad_notice_list.lion">공지사항</a> 
 								<a class="nav-link" href="admin_homepage_categoryList.jsp">카테고리</a> 
 								<a class="nav-link" href="admin_homepage_mannerLevelList.jsp">매너지수</a>
 							</nav>
@@ -148,8 +149,8 @@
 						<div class="collapse" id="inquiry" aria-labelledby="headingSix"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="admin_inquiry_inquiryList.jsp">1:1문의</a> 
-								<a class="nav-link" href="admin_inquiry_faqList.jsp">FAQ</a>
+								<a class="nav-link" href="ad_inquery_list.lion">1:1문의</a> 
+								<a class="nav-link" href="ad_faq_list.lion">FAQ</a> 
 							</nav>
 						</div>
 						<div class="sb-sidenav-menu-heading">ADMIN ACCOUNT</div>
@@ -177,16 +178,17 @@
 							</ol>
 						</nav>
 
+						 
 						<div>
 							<!-- searchBar -->
-							<form class="search-form" action="#">
+							<!-- <form class="search-form" action="#">
 								<select class="form-select" aria-label="Default select example">
 									<option value="1" selected>제목</option>
 									<option value="2">작성자ID</option>
 								</select> 
 								<input class="form-control" type="text" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
 								<button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-							</form>
+							</form> -->
 							
 							<button type="button" class="btn btn-secondary writeBtn" onclick="location.href='ad_notice_insertForm.lion'">글쓰기</button>
 						</div>
@@ -222,7 +224,7 @@
 						</div>
 
 						<!-- page navigation -->
-						<nav aria-label="Page navigation example">
+						<!-- <nav aria-label="Page navigation example">
 							<ul class="pagination justify-content-center">
 								<li class="page-item"><a class="page-link"
 									href="javascript:void(0);" aria-label="Previous"> <span
@@ -243,7 +245,7 @@
 										aria-hidden="true">&raquo;</span>
 								</a></li>
 							</ul>
-						</nav>
+						</nav> -->
 					</div>
 				</div>
 			</main>

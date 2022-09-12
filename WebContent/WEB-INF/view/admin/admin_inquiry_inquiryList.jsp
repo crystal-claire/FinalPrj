@@ -1,14 +1,8 @@
-<%@page import="com.test.util.DBConn"%>
-<%@page import="java.sql.Connection"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-%>
-<%
-		
-
 %>
 <!DOCTYPE html>
 <html>
@@ -18,7 +12,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>admin같이사자</title>
 
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <link href="<%=cp %>/css/adminStyle.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -30,11 +23,12 @@
     color: #fca652 !important;
 }
 </style>	
+
 </head>
 <body class="sb-nav-fixed">
 
 	<!-- import HEADER -->
-	<c:import url="header.lion"></c:import>
+	<c:import url="admin_header.jsp"></c:import>
 
 	<div id="layoutSidenav">
 
@@ -129,10 +123,10 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse show" id="report" aria-labelledby="headingFive"
+						<div class="collapse" id="report" aria-labelledby="headingFive"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link current-menu" href="admin_report_receptionList.jsp">접수내역</a> 
+								<a class="nav-link" href="admin_report_receptionList.jsp">접수내역</a> 
 								<a class="nav-link" href="admin_report_handlingList.jsp">처리내역</a> 
 								<a class="nav-link" href="admin_report_reasonList.jsp">사유관리</a>
 							</nav>
@@ -147,11 +141,11 @@
 								<i class="fas fa-angle-down"></i>
 							</div>
 						</a>
-						<div class="collapse" id="inquiry" aria-labelledby="headingSix"
+						<div class="collapse show" id="inquiry" aria-labelledby="headingSix"
 							data-bs-parent="#sidenavAccordion">
 							<nav class="sb-sidenav-menu-nested nav">
-								<a class="nav-link" href="admin_inquiry_inquiryList.jsp">1:1문의</a> 
-								<a class="nav-link" href="admin_inquiry_faqList.jsp">FAQ</a>
+								<a class="nav-link current-menu" href="ad_inquiry_list.lion">1:1문의</a> 
+								<a class="nav-link" href="ad_faq_list.lion">FAQ</a> 
 							</nav>
 						</div>
 						<div class="sb-sidenav-menu-heading">ADMIN ACCOUNT</div>
@@ -173,55 +167,87 @@
 						<!--  Breadcrumb -->
 						<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item">신고관리</li>
+								<li class="breadcrumb-item">문의관리</li>
 								<li class="breadcrumb-item active" aria-current="page"><a
-									href="#">접수내역</a></li>
+									href="#">1:1문의</a></li>
 							</ol>
 						</nav>
 
 						<!-- searchBar -->
-						<form action="#">
+						<!-- <form action="#">
 							<select class="form-select" aria-label="Default select example">
-								<option value="1" selected>이메일(ID)</option>
-							</select> <input class="form-control" type="text"
-								aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-							<button class="btn btn-primary" id="btnNavbarSearch"
-								type="button">
-								<i class="fas fa-search"></i>
-							</button>
-						</form>
+								<option value="1" selected>작성자ID</option>
+							</select> 
+							<input class="form-control" type="text" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+							<button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+						</form> -->
 
 						<div class="card-body">
 							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>번호</th>
-										<th>피신고자ID</th>
-										<th>게시물종류</th>
-										<th>게시물번호</th>
-										<th>신고자ID</th>
-										<th>신고사유</th>
-										<th>신고접수일</th>									
+										<th>제목</th>
+										<th>작성자ID</th>
+										<th>작성일</th>
+										<th>답변상태</th>
+										<th>답변일</th>
+										<th>담당자</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="report" items="${list }">
+								<c:forEach var="inquiry" items="${list }">
 									<tr>
-										<td>${report.num }</td>
-										<td>${report.member_id}</td>
-										<td>${report.type }</td>
-										<td><a href="<%=cp%>/admin_report_receptionDetail.lion?code=${report.code}">${report.buypost_code }</a></td>
-										<td>${report.reporter_id}</td>
-										<td>${report.main_name}</td>
-										<td>${report.datetime }</td>
+										<td>${inquiry.num }</td>
+										<td><a href="ad_inquiry_article.lion?inquiry_code=${inquiry.inquiry_code }">${inquiry.title }</a></td>
+										<td>${inquiry.writer_id }</td>
+										<td>${inquiry.write_datetime }</td>
+										<td>
+											<span class="badge rounded-pill bg-danger report-handling-badge">${inquiry.state }</span>
+										</td>
+										<td></td>
+										<td></td>
 									</tr>
-									</c:forEach> 
+								</c:forEach>
+									<!-- <tr>
+										<td>9</td>
+										<td><a href="admin_inquiry_inquiryAnswerInsertForm.jsp">나눔날짜 변경가능할까요?</a></td>
+										<td>wus234@naver.com</td>
+										<td>2022-05-25</td>
+										<td>
+											<span class="badge rounded-pill bg-danger report-handling-badge">미답변</span>
+										</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>8</td>
+										<td><a href="admin_inquiry_inquiryAnswerArticle.jsp">나눔날 못가면 어떡하나요?</a></td>
+										<td>hus234@naver.com</td>
+										<td>2022-05-24</td>
+										<td>
+											<span class="badge rounded-pill bg-secondary report-handling-badge">답변</span>
+										</td>
+										<td>2022-05-24</td>
+										<td>ej456</td>
+									</tr>
+									<tr>
+										<td>7</td>
+										<td><a href="admin_inquiry_inquiryAnswerArticle.jsp">상품에 문제가 있으면 어떡하나요?</a></td>
+										<td>aus234@naver.com</td>
+										<td>2022-05-23</td>
+										<td>
+											<span class="badge rounded-pill bg-secondary report-handling-badge">답변</span>
+										</td>
+										<td>2022-05-23</td>
+										<td>sj153</td>
+									</tr> -->
 								</tbody>
 							</table>
 						</div>
 
 						<!-- page navigation -->
-						<nav aria-label="Page navigation example">
+						<!-- <nav aria-label="Page navigation example">
 							<ul class="pagination justify-content-center">
 								<li class="page-item"><a class="page-link"
 									href="javascript:void(0);" aria-label="Previous"> <span
@@ -242,7 +268,7 @@
 										aria-hidden="true">&raquo;</span>
 								</a></li>
 							</ul>
-						</nav>
+						</nav> -->
 					</div>
 				</div>
 			</main>

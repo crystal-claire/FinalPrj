@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.IInquiryDAO">
+
+    <!-- 1:1 문의 목록조회 --> 
+    <select id="listInquiryList"
+    resultType="com.test.mybatis.InquiryDTO">
+    SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DATETIME DESC) AS NUM, INQUIRY_CODE, INQUIRY_ANSWER_CODE, TITLE, WRITE_DATETIME, STATE
+	FROM VIEW_INQUIRY_ADMIN_SELECT
+    </select>
+
+    <!-- 1:1 문의 게시물조회 --> 
+	<select id="listInquiryArticle"
+	parameterType="com.test.mybatis.InquiryDTO"
+	resultType="com.test.mybatis.InquiryDTO">
+	SELECT INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 1:1 문의 게시물 Insert Form-->
+	<select id="insertInquiryArticleForm"
+	resultType="com.test.mybatis.InquiryDTO">
+    SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DATETIME DESC) AS NUM, INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, WRITE_DATETIME, STATE, ANSWER_DATETIME, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	</select>
+	
+	<!-- 1:1 문의 게시물 Update Form -->
+	<select id="updateInquiryArticleForm"
+	parameterType="com.test.mybatis.InquiryDTO"
+	resultType="com.test.mybatis.InquiryDTO">
+	SELECT INQUIRY_CODE, INQUIRY_ANSWER_CODE, WRITER_ID, TITLE, INQUIRY, ANSWER, INQUIRY_PATH 
+	FROM VIEW_INQUIRY_ADMIN_SELECT 
+	WHERE INQUIRY_CODE=#{inquiry_code, jdbcType=VARCHAR}
+	</select>
+ 
+	
+	<!-- 1:1 문의 게시물 INSERT -->
+	<insert id="insertInquiryArticle" parameterType="com.test.mybatis.InquiryDTO">
+		INSERT INTO INQUIRY(CODE, TITLE, CONTENT, WRITE_DATETIME, UPDATE_DATETIME, PHOTO_PATH, MEMBER_CODE)
+		VALUES('I'||INQUIRY_SEQ.NEXTVAL, #{title, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, SYSDATE, NULL, NULL, #{member_code, jdbcType=VARCHAR}) 
+	</insert>
+	
+	
+	<!-- 1:1 문의 게시물 UPDATE -->
+	<update id="updateInquiryArticle" parameterType="com.test.mybatis.InquiryDTO">
+		UPDATE INQUIRY
+		SET TITLE = #{title, jdbcType=VARCHAR}
+		    , CONTENT = #{content, jdbcType=VARCHAR}
+		    , PHOTO_PATH = #{photo_path, jdbcType=VARCHAR}
+		    , UPDATE_DATETIME = SYSDATE
+		WHERE CODE= #{code, jdbcType=VARCHAR}
+	</update>
+	
+	
+	<!-- 1:1 문의 게시물 DELETE  -->
+	<delete id="deleteInquiryArticle" parameterType="com.test.mybatis.InquiryDTO">
+		DELETE
+		FROM INQUIRY
+		WHERE CODE= #{code, jdbcType=VARCHAR}
+	</delete>
+	
+	
+</mapper>
